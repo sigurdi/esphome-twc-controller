@@ -3,3 +3,8 @@ __pycache__/
 # Ignore vim recovery files
 .*.swp
 
+
+# ESPHome
+.esphome/
+secrets.yaml
+*.esphomebundle

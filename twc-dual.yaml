@@ -1,0 +1,113 @@
+# Example: two Tesla Wall Connector Gen2 on one RS485 bus and one main fuse (up to 4 are supported).
+# Each charger becomes its own Home Assistant device. Entity names are written once and made for every charger.
+esphome:
+  name: twc
+  friendly_name: TWC
+  min_version: 2025.7.0
+  devices:
+    - id: charger_1
+      name: "Charger 1"
+    - id: charger_2
+      name: "Charger 2"
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+logger:
+  level: DEBUG
+
+api:
+  encryption:
+    key: !secret twc_api_key
+
+ota:
+  - platform: esphome
+    password: !secret twc_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    password: !secret twc_ap_password
+
+captive_portal:
+
+uart:
+  id: twc_uart
+  tx_pin: 6
+  rx_pin: 7
+  baud_rate: 9600
+  rx_buffer_size: 512
+
+external_components:
+  - source: github://sigurdi/esphome-twc-controller@main
+    components: [twc_controller]
+
+sensor:
+  - platform: homeassistant     # optional, see README "Car type on IT 3-phase"
+    id: circuit_power
+    entity_id: sensor.your_circuit_power
+    internal: true
+
+twc_controller:
+  uart_id: twc_uart
+  flow_control_pin: 8
+  min_current: 6
+  max_current: 32               # shared by all chargers: together they never get more
+  set_current: 16
+  grid_type: IT_3PHASE
+
+  current_limit:
+    name: "Set Current"         # not made for the last charger: it gets what is left
+  charging:
+    name: "Charging Enabled"
+  car_type:
+    name: "Car Type"
+  power:
+    name: "Charging Power"
+  actual_current:
+    name: "Actual Current"
+  offered_current:
+    name: "Offered Current"
+  assigned_current:
+    name: "Assigned Current"
+  phase_1_voltage:
+    name: "Phase 1 Voltage"
+  charge_mode:
+    name: "Charge Mode"
+  session_energy:
+    name: "Session Energy"
+  total_energy:
+    name: "Total Energy"
+  energy_offset:
+    name: "Total Energy Offset"
+    mode: box
+  state_text:
+    name: "Status"
+  online:
+    name: "TWC Online"
+  type_check:
+    name: "Type Check"
+  car_info:
+    name: "Car"
+  connected_vin:
+    name: "Connected VIN"
+
+  multi_charger:
+    circuit_power: circuit_power
+    control_mode:
+      name: "Control Mode"      # Current = Set Current rules, Power = Max Power rules
+    max_power:
+      name: "Max Power"         # W for all cars together
+    priority:
+      name: "Priority"          # % of the power to charger 1. 50 = equal, 75 = 75/25
+    total_current:
+      name: "Total Current"     # lower the shared limit at runtime, e.g. for solar
+    total_power:
+      name: "Total Power"
+    chargers:                   # priority order
+      - device_id: charger_1
+        # slave_id: 0x1234      # pin to one TWC (ID from the log line "Found TWC xxxx"); else bus order
+      - device_id: charger_2
