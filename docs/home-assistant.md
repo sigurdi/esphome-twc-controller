@@ -2,6 +2,7 @@
 
 The charger's `total_energy` sensor counts all energy. To also count kWh **per car**, use a Utility Meter with one tariff
 per car, plus an automation that picks the tariff from the VIN. The ESP needs none of this; it is all set up in HA.
+It works the same with one charger shared by several cars as with several chargers.
 
 A Tesla reports its VIN to the Wall Connector, so it can be recognised. Other cars report no VIN (`Connected VIN` = `0`).
 They can go to a "Guest" counter, or you can choose the car from a dropdown.

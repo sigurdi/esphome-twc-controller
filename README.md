@@ -39,8 +39,9 @@ and energy.
 - **Set Current**: the current the car may draw, changed from HA, for example by a solar or tariff automation.
 - **Charging Enabled**: starts or stops charging (`FCB1` / `FCB2`).
 - **Several chargers** (1–4) on one bus share one main fuse. Each charger is its own HA device.
-- **Power mode**: you set the total power in W. It is split between the cars by priority, and each car gets the amps that
-  give that power on its phase setup.
+- **Power mode** (one or several chargers): you set the power in W, and each car gets the amps that give that power on
+  its phase setup. With several chargers the power is split between the cars by priority.
+- **kWh per car** in Home Assistant, also when several cars share one charger (by VIN, or a guest counter).
 - **IT grids** (common in Norway): correct power and energy, even though the Wall Connector only measures one line there.
 - **Car type**: from the VIN (Tesla), or measured with an optional circuit power meter for cars without a VIN.
 - **Energy**: energy per session and a lifetime counter that you can use in the HA Energy dashboard, with an offset you can set.
@@ -110,8 +111,14 @@ A few need explaining:
 | `offered_current` | What the Wall Connector says it offers the car |
 | `actual_current` | What the car draws (L1, 0.01 A resolution) |
 | `charge_mode` | For example `Idle`, `3-phase`, `1-phase IT (meter)`, `3-phase IT (3 sub-chargers)` |
-| `car_type` | Select, IT 3-phase only: `Auto`, or force `1-phase` / `3-phase` / `2 sub-chargers` |
+| `car_type` | Select: `Auto`, or force `1-phase` / `3-phase` / `2 sub-chargers` |
 | `type_check` | On while the quick car type check runs (see below) |
+
+`car_type` and `type_check` are only made on `IT_3PHASE`, and `phase_2_*` / `phase_3_*` only on `TN_3PHASE`. On other
+grids they are skipped (the config log says so), so the same entity list can be used everywhere.
+
+Power control works with one charger too: add `multi_charger:` with `control_mode`, `max_power` and `total_power` but
+no `chargers:` (see `twc.yaml`).
 | `plug_state` | Unplugged / Charging / Plugged in, not charging / Error (firmware 4.5.3+) |
 | `session_energy` | kWh since the car was plugged in |
 | `total_energy` + `energy_offset` | Lifetime kWh counter (see [Energy](#energy)) |
@@ -182,7 +189,7 @@ So the component keeps its own counter:
   - The counters are stored by charger position in the YAML. If you change the order of `chargers:`, the counters
     swap too.
 
-To track kWh per car in Home Assistant (by VIN, or a guest counter), see [docs/home-assistant.md](docs/home-assistant.md).
+To track kWh per car in Home Assistant (by VIN, or a guest counter), also with one charger shared by several cars, see [docs/home-assistant.md](docs/home-assistant.md).
 
 ## Several chargers
 

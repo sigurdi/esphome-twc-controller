@@ -2,8 +2,10 @@
 
 Top level: bus, grid_type, max_current (main fuse, shared by all chargers) and the entity names, written once.
 `multi_charger:` (optional): the TWCs on the bus (1-4, each its own HA device) and the shared control:
-control mode (Current / Power), max power, priority, total current, total power.
+control mode (Current / Power), max power, priority, total current, total power. Also for a single charger.
 """
+import logging
+
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
@@ -38,6 +40,8 @@ from esphome.const import (
     UNIT_VOLT,
     UNIT_WATT,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 CODEOWNERS = []
 DEPENDENCIES = ["uart"]
@@ -338,6 +342,24 @@ def _validate(config):
     return config
 
 
+# Entities that only mean something on one grid type. On other grids they are not made, so HA shows no dead entities.
+IT_ONLY = [CONF_CAR_TYPE, "type_check"]  # car type detection: IT 3-phase only
+TN_ONLY = ["phase_2_current", "phase_3_current", "phase_2_voltage", "phase_3_voltage"]  # TWC measures L2/L3 on TN only
+
+
+def _drop_unused(config):
+    grid = config[CONF_GRID_TYPE]
+    drop = (IT_ONLY if grid != "IT_3PHASE" else []) + (TN_ONLY if grid != "TN_3PHASE" else [])
+    skipped = set()
+    for ch in config[CONF_CHARGER_LIST]:
+        for key in drop:
+            if ch.pop(key, None) is not None:
+                skipped.add(key)
+    if skipped:
+        _LOGGER.info("twc_controller: %s not used with grid_type %s, skipped", ", ".join(sorted(skipped)), grid)
+    return config
+
+
 CONFIG_SCHEMA = cv.All(
     _expand_chargers,
     cv.Schema(
@@ -360,6 +382,7 @@ CONFIG_SCHEMA = cv.All(
     .extend(uart.UART_DEVICE_SCHEMA)
     .extend(cv.COMPONENT_SCHEMA),
     _validate,
+    _drop_unused,
 )
 
 FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(

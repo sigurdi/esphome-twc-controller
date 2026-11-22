@@ -62,7 +62,7 @@ twc_controller:
   charging:
     name: "Charging Enabled"
   car_type:
-    name: "Car Type"            # IT 3-phase only: Auto / 1-phase / 3-phase / 2 sub-chargers
+    name: "Car Type"            # made on IT 3-phase only: Auto / 1-phase / 3-phase / 2 sub-chargers
 
   # Measurements (leave out what you do not need)
   current:
@@ -79,7 +79,7 @@ twc_controller:
     name: "Phase 1 Voltage"
   phase_1_current:
     name: "Phase 1 Current"
-  # TN_3PHASE only (the TWC measures L2/L3 there):
+  # Made on TN_3PHASE only (the TWC measures L2/L3 there):
   phase_2_voltage:
     name: "Phase 2 Voltage"
   phase_3_voltage:
@@ -112,7 +112,7 @@ twc_controller:
   vehicle_charging:
     name: "Vehicle Charging"
   type_check:
-    name: "Type Check"          # on while the quick car type check runs
+    name: "Type Check"          # IT 3-phase only: on while the quick car type check runs
   plug_state:
     name: "Plug"
   car_info:
@@ -126,12 +126,14 @@ twc_controller:
   model:
     name: "TWC Model"
 
-  # Optional shared control (power mode, circuit meter). See twc-dual.yaml for several chargers.
-  # multi_charger:
-  #   circuit_power: circuit_power
-  #   control_mode:
-  #     name: "Control Mode"    # Current = Set Current rules, Power = Max Power rules
-  #   max_power:
-  #     name: "Max Power"
-  #   total_power:
-  #     name: "Total Power"
+  # Power control, also for one charger. See twc-dual.yaml for several chargers.
+  multi_charger:
+    # circuit_power: circuit_power  # IT 3-phase car type detection, see the sensor above
+    control_mode:
+      name: "Control Mode"      # Current = Set Current rules, Power = Max Power rules
+    max_power:
+      name: "Max Power"         # W. Range = what max_current gives on this grid
+    total_current:
+      name: "Total Current"     # lower the limit at runtime, e.g. for solar
+    total_power:
+      name: "Total Power"
