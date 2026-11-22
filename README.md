@@ -94,7 +94,7 @@ Top-level options:
 | `flow_control_pin` | required | RS485 DE/RE pin |
 | `grid_type` | required | `SINGLE_PHASE`, `TN_3PHASE` or `IT_3PHASE` (see below) |
 | `max_current` | 16 | Main fuse / supply cable in A. The most all chargers **together** may draw |
-| `min_current` | 6 | Below this the charger is paused (0 A) instead. Under 6 A some cars refuse to restart without a re-plug |
+| `min_current` | 6 | Have been problems below 6A, some cars refuse to restart without a re-plug |
 | `set_current` | `min_current` | Start value of Set Current |
 | `twc_id` | `0x7777` | The master's ID on the bus |
 | `nominal_voltage` | 230 | Used until the Wall Connector reports a voltage |
