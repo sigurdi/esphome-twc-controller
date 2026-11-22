@@ -28,7 +28,9 @@ Go to **Settings → Devices & services → Helpers → Create helper**.
 - Tariffs: one per car, for example `Guest`, `Leaf`, `Model 3`, `Model Y`.
 
 This creates `select.charger_1_per_car` and one kWh sensor per tariff. Those sensors can be added to the HA Energy
-dashboard.
+dashboard. The select can be shown on the charger's card (bottom row here, named "TWC Strøm ladet pr bil"):
+
+<img src="HA.Kontroller-per-car.png" alt="Charger controls with the kWh per car select at the bottom" width="300">
 
 With several chargers, make one Utility Meter per charger, and one template sensor per car that adds them up.
 

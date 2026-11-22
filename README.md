@@ -22,6 +22,7 @@ and energy.
 ## Contents
 
 - [What it does](#what-it-does)
+- [Home Assistant](#home-assistant)
 - [Hardware](#hardware)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -46,6 +47,23 @@ and energy.
 - **Car type**: from the VIN (Tesla), or measured with an optional circuit power meter for cars without a VIN.
 - **Energy**: energy per session and a lifetime counter that you can use in the HA Energy dashboard, with an offset you can set.
 - Measurements: voltage and current per phase, offered current, power, plug state, VIN, car model, serial, firmware and TWC model.
+
+## Home Assistant
+
+One charger with [`twc.yaml`](twc.yaml) on a `SINGLE_PHASE` grid (HA in Norwegian, so some states and card titles are
+Norwegian):
+
+<p>
+  <img src="docs/HA.Kontroller.png" alt="Controls: Charging Enabled, Control Mode, Max Power, Set Current, Total Energy Offset" width="300">
+  <img src="docs/Sensors.png" alt="Sensors: currents, power, voltage, charge mode, plug, energy" width="300">
+  <img src="docs/Diagnostic.png" alt="Diagnostics: firmware, serial, state, TWC model, online" width="300">
+</p>
+
+An `IT_3PHASE` charger with the entity names in Norwegian, plus the kWh-per-car dropdown from
+[docs/home-assistant.md](docs/home-assistant.md) (Biltype = Car Type, Maks Effekt = Max Power, Styring = Control Mode,
+Totalt Ladet Offset = Total Energy Offset, "TWC Strøm ladet pr bil" = the Utility Meter tariff select):
+
+<img src="docs/HA.Kontroller-per-car.png" alt="Controls on IT 3-phase with Car Type and the kWh per car dropdown" width="300">
 
 ## Hardware
 
