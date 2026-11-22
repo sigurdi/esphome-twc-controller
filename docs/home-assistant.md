@@ -31,6 +31,7 @@ This creates `select.charger_1_per_car` and one kWh sensor per tariff. Those sen
 dashboard. The select can be shown on the charger's card (bottom row here, named "TWC Strøm ladet pr bil"):
 
 <img src="HA.Kontroller-per-car.png" alt="Charger controls with the kWh per car select at the bottom" width="300">
+<img src="HA.kWh-per-car.png" alt="Total Energy and one kWh sensor per car" width="300">
 
 With several chargers, make one Utility Meter per charger, and one template sensor per car that adds them up.
 

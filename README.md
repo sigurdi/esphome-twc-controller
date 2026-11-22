@@ -61,9 +61,13 @@ Norwegian):
 
 An `IT_3PHASE` charger with the entity names in Norwegian, plus the kWh-per-car dropdown from
 [docs/home-assistant.md](docs/home-assistant.md) (Biltype = Car Type, Maks Effekt = Max Power, Styring = Control Mode,
-Totalt Ladet Offset = Total Energy Offset, "TWC Strøm ladet pr bil" = the Utility Meter tariff select):
+Totalt Ladet Offset = Total Energy Offset, "TWC Strøm ladet pr bil" = the Utility Meter tariff select), and the kWh per
+car from that Utility Meter (Totalt Ladet = Total Energy, Typesjekk = Type Check):
 
-<img src="docs/HA.Kontroller-per-car.png" alt="Controls on IT 3-phase with Car Type and the kWh per car dropdown" width="300">
+<p>
+  <img src="docs/HA.Kontroller-per-car.png" alt="Controls on IT 3-phase with Car Type and the kWh per car dropdown" width="300">
+  <img src="docs/HA.kWh-per-car.png" alt="Total Energy and kWh per car: Guest, Leaf, Model 3, Model X, Model Y" width="300">
+</p>
 
 ## Hardware
 
