@@ -133,7 +133,5 @@ twc_controller:
       name: "Control Mode"      # Current = Set Current rules, Power = Max Power rules
     max_power:
       name: "Max Power"         # W. Range = what max_current gives on this grid
-    total_current:
-      name: "Total Current"     # lower the limit at runtime, e.g. for solar
     total_power:
       name: "Total Power"
