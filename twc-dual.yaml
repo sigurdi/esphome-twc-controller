@@ -9,6 +9,10 @@ esphome:
       name: "Charger 1"
     - id: charger_2
       name: "Charger 2"
+    # - id: charger_3       # also add it under multi_charger: chargers: if used
+    #   name: "Charger 3"
+    # - id: charger_4
+    #   name: "Charger 4"
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -45,6 +49,8 @@ external_components:
   - source: github://sigurdi/esphome-twc-controller@main
     components: [twc_controller]
 
+# Used on IT grids (e.g. Norway) to detect if a car is 1-phase, 3-phase or "2 sub-chargers" (older Model S/X).
+# Needs an HA power sensor that includes the charger, e.g. Tibber Pulse total power or an inverter UPS load.
 sensor:
   - platform: homeassistant     # optional, see README "Car type on IT 3-phase"
     id: circuit_power
@@ -59,6 +65,26 @@ twc_controller:
   set_current: 16
   grid_type: IT_3PHASE
 
+  multi_charger:
+    circuit_power: circuit_power
+    control_mode:
+      name: "Control Mode"      # Current = Set Current rules, Power = Max Power rules
+    max_power:
+      name: "Max Power"         # W for all cars together
+    priority:
+      name: "Priority"          # % of the power to charger 1. 50 = equal, 75 = 75/25
+    total_current:
+      name: "Total Current"     # lower the shared limit at runtime, e.g. for solar
+    total_power:
+      name: "Total Power"
+    chargers:                   # priority order
+      - device_id: charger_1
+        # slave_id: 0x1234      # pin to one TWC (ID from the log line "Found TWC xxxx"); else bus order
+      - device_id: charger_2
+      # - device_id: charger_3  # also add it under esphome: devices:
+      # - device_id: charger_4
+
+# Naming as seen in HA below
   current_limit:
     name: "Set Current"         # not made for the last charger: it gets what is left
   charging:
@@ -94,20 +120,3 @@ twc_controller:
     name: "Car"
   connected_vin:
     name: "Connected VIN"
-
-  multi_charger:
-    circuit_power: circuit_power
-    control_mode:
-      name: "Control Mode"      # Current = Set Current rules, Power = Max Power rules
-    max_power:
-      name: "Max Power"         # W for all cars together
-    priority:
-      name: "Priority"          # % of the power to charger 1. 50 = equal, 75 = 75/25
-    total_current:
-      name: "Total Current"     # lower the shared limit at runtime, e.g. for solar
-    total_power:
-      name: "Total Power"
-    chargers:                   # priority order
-      - device_id: charger_1
-        # slave_id: 0x1234      # pin to one TWC (ID from the log line "Found TWC xxxx"); else bus order
-      - device_id: charger_2

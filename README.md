@@ -160,6 +160,7 @@ about V × ΔI for a 1-phase car and √3 × V × ΔI for a 3-phase car.
 
 The meter must report W, not kW, and should update at least every 5–10 s for the quick check.
 [`tools/meter_sim.py`](tools/meter_sim.py) runs the detection logic on test cases.
+For example the Tibber Pulse total power, or an inverter's UPS load output when the charger is connected to it.
 
 ## Energy
 
@@ -184,6 +185,9 @@ So the component keeps its own counter:
 To track kWh per car in Home Assistant (by VIN, or a guest counter), see [docs/home-assistant.md](docs/home-assistant.md).
 
 ## Several chargers
+
+Only tested with one charger plus a second one on the bench; the multi-charger logic is mostly tested in simulation.
+Feedback is welcome.
 
 Up to 4 Wall Connectors can share one RS485 bus. They share **one main fuse**: `max_current` is the limit for all of them
 together, and a charger alone may use all of it. Write the entity names once at the top level. They are created for each
@@ -222,6 +226,8 @@ Set `logger: level: VERBOSE` to see every frame.
    termination or the DE pin.
 3. **Current**: change Set Current while charging. Offered Current follows within 1–2 s and Actual Current within about 10 s.
 4. **Stop / start**: turn Charging Enabled off and on. Note what the car does. Some cars ask for a re-plug after a STOP.
+   Tested OK on Model X 2017, Model 3 2021, Model Y 2025, Mercedes eVito 2026 and Nissan Leaf 2018: charging starts
+   again quickly, and the car app shows "charging stopped" while it is stopped.
 5. **Restart the ESP** while charging. The car should go on charging, or resume within about 10 s.
 6. **Pull the RS485 cable** for 40 s. The Wall Connector stops the car on its own, which is expected. When you reconnect,
    the link comes back.
