@@ -5,6 +5,9 @@
 #include <cstring>
 
 #include "esphome/core/log.h"
+#if __has_include("esphome/core/alloc_helpers.h")
+#include "esphome/core/alloc_helpers.h"  // format_hex_pretty moved here in ESPHome 2026.11
+#endif
 
 namespace esphome {
 namespace twc_controller {

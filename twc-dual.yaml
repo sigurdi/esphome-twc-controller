@@ -3,7 +3,7 @@
 esphome:
   name: twc
   friendly_name: TWC
-  min_version: 2025.7.0
+  min_version: 2025.8.0
   devices:
     - id: charger_1
       name: "Charger 1"

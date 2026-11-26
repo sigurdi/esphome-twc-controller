@@ -104,8 +104,8 @@ external_components:
 If you prefer a local copy, copy `components/twc_controller/` into your ESPHome config folder and use
 `source: {type: local, path: components}` instead.
 
-Tested with ESPHome 2026.10 (esp-idf) on an ESP32-C3, against Wall Connector Gen2 firmware 4.5.x. ESPHome 2025.7 or
-newer is needed for the `devices:` used in the multi-charger example.
+Tested with ESPHome 2026.11, 2026.10 and 2026.4 (esp-idf) on an ESP32-C3, against Wall Connector Gen2 firmware 4.5.x.
+The multi-charger example needs ESPHome 2025.8 or newer (2025.7 does not allow the same entity name on several devices).
 
 ## Configuration
 
